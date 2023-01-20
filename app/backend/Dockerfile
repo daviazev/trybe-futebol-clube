@@ -1,5 +1,10 @@
-# FROM node:16.14-alpine
-# WORKDIR /app-backend
-#  ...
+FROM node:16.14-alpine
+WORKDIR /app-backend
 
-# primeiro commit - criação da PR
+EXPOSE 3001
+
+COPY . .
+
+RUN npm install
+
+CMD ["npm", "start"]
