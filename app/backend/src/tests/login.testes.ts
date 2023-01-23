@@ -1,6 +1,6 @@
 import * as sinon from 'sinon';
 import * as chai from 'chai';
-import * as bcryptjs from 'bcryptjs'
+// import * as bcryptjs from 'bcryptjs'
 // @ts-ignore
 import chaiHttp = require('chai-http');
 
@@ -10,9 +10,9 @@ import { app } from '../app';
 
 import User from '../database/models/Users';
 
-import UserController from '../database/controller/user.controller';
+// import UserController from '../database/controller/user.controller';
 
-import { Response } from 'superagent';
+// import { Response } from 'superagent';
 
 import { 
   loginMock,
