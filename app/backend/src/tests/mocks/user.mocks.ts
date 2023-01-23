@@ -13,5 +13,24 @@ export const loginMock = {
   password: "umaSenhaMuitoDifícil"
 }
 
-export const token = `eyJhbGciOiJIUzI1NiIsImV4cGlyZXNJbiI6IjdkIn0.eyJlbWFpbCI6InRlc3RlQHRlc3Rl
-LmNvbSIsInBhc3N3b3JkIjoiMTIzNDU2Nzg5In0.61hI8wlp_dKXoKiT1bM-rTJ1YfwEClPP-uVrvmqAjdk`
+export const noEmailLoginMock = {
+  password: "umaSenhaMuitoDifícil"
+}
+
+export const noPasswordLoginMock = {
+  email: "teste@teste.com",
+}
+
+export const invalidEmail = {
+  email: "teste@teste..com",
+  password: "umaSenhaMuitoDifícil"
+}
+
+export const invalidPassword = {
+  email: "teste@teste.com",
+  password: "123"
+}
+
+
+// export const token = `eyJhbGciOiJIUzI1NiIsImV4cGlyZXNJbiI6IjdkIn0.eyJlbWFpbCI6InRlc3RlQHRlc3Rl
+// LmNvbSIsInBhc3N3b3JkIjoiMTIzNDU2Nzg5In0.61hI8wlp_dKXoKiT1bM-rTJ1YfwEClPP-uVrvmqAjdk`

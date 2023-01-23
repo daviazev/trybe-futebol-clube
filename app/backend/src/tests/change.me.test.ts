@@ -14,14 +14,21 @@ import UserController from '../database/controller/user.controller';
 
 import { Response } from 'superagent';
 
-import { loginMock, sucessUser, token } from './mocks/user.mocks'
+import { 
+  loginMock,
+  sucessUser,
+  noEmailLoginMock, 
+  noPasswordLoginMock,
+  invalidEmail,
+  invalidPassword
+ } from './mocks/user.mocks'
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
 
-describe('Seu teste', () => {
+describe('Testes para a rota /login', () => {
   // let chaiHttpResponse: Response;
 
   before(async () => {
@@ -39,5 +46,29 @@ describe('Seu teste', () => {
     const response = await chai.request(app).post('/login').send(loginMock)
 
     expect(response.status).to.be.equal(200)
+  })
+
+  it('Requisição retorna status 400 - sem email', async () => {
+    const response = await chai.request(app).post('/login').send(noEmailLoginMock)
+
+    expect(response.status).to.be.equal(400)
+  })
+
+  it('Requisição retorna status 400 - sem password', async () => {
+    const response = await chai.request(app).post('/login').send(noPasswordLoginMock)
+
+    expect(response.status).to.be.equal(400)
+  })
+
+  it('Requisição deve retornar status 401 - email inválido', async () => {
+    const response = await chai.request(app).post('/login').send(invalidEmail)
+
+    expect(response.status).to.be.equal(401);
+  })
+
+  it('Requisição deve retornar status 401 - senha inválida', async () => {
+    const response = await chai.request(app).post('/login').send(invalidPassword)
+
+    expect(response.status).to.be.equal(401);
   })
 });
