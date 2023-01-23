@@ -20,8 +20,10 @@ export default class UserController {
 
     const result = await this.userSerice.login(email, password);
 
+    if (!result) return res.status(401).json({ message: 'Incorrect email or password' });
+
     const token = UserController.generateToken(email, password);
 
-    if (result) return res.status(200).json({ token });
+    return res.status(200).json({ token });
   };
 }

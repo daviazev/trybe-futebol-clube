@@ -1,14 +1,14 @@
-import { hash, compare } from 'bcryptjs';
+import { compare } from 'bcryptjs';
 import User from '../models/Users';
 
 export default class UserService {
+  validatePassword = async (password: string, password2: string) => compare(password, password2);
+
   login = async (email: string, password: string): Promise<boolean> => {
-    await User.findOne({ where: { email } });
+    const user = await User.findOne({ where: { email } });
 
-    const encryptPassword = await hash(password, 10);
+    if (user && await this.validatePassword(password, user.password)) return true;
 
-    const isEqual = await compare(password, encryptPassword);
-
-    return isEqual;
+    return false;
   };
 }
