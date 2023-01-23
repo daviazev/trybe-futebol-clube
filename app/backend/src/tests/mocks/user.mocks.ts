@@ -22,7 +22,7 @@ export const noPasswordLoginMock = {
 }
 
 export const invalidEmail = {
-  email: "teste@teste..com",
+  email: "teste@teste",
   password: "umaSenhaMuitoDifícil"
 }
 
