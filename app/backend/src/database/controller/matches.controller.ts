@@ -45,4 +45,16 @@ export default class MatchesController {
       return res.status(500).json({ message: erro500 });
     }
   };
+
+  updateMatch = async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const { homeTeamGoals, awayTeamGoals } = req.body;
+      await this.matchesService
+        .updateMatch(Number(id), homeTeamGoals, awayTeamGoals);
+      return res.status(200).json({ message: 'Match updated' });
+    } catch (error) {
+      return res.status(500).json({ message: erro500 });
+    }
+  };
 }
