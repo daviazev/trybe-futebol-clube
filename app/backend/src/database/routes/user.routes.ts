@@ -9,4 +9,6 @@ const userController = new UserController();
 
 router.post('/login', validateLoginFields, userController.login);
 
+router.get('/login/validate', userController.getUserRoleFromToken);
+
 export default router;
