@@ -35,4 +35,14 @@ export default class MatchesController {
       return res.status(500).json({ message: erro500 });
     }
   };
+
+  finishMatch = async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const finish = await this.matchesService.finishMatch(Number(id));
+      return res.status(200).json(finish);
+    } catch (error) {
+      return res.status(500).json({ message: erro500 });
+    }
+  };
 }

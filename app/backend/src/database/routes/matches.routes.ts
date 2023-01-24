@@ -2,6 +2,8 @@ import { Router } from 'express';
 import MatchesController from '../controller/matches.controller';
 
 import validateJWT from '../middlewares/jwt.middleware';
+import preventDuplicateTeamsMiddleware from '../middlewares/matches.midleware';
+import validateIfTeamsExists from '../middlewares/teams.middleware';
 
 const router = Router();
 
@@ -11,6 +13,14 @@ router.get('/matches', matchesController.findMatchesByStatus);
 
 router.get('/matches', matchesController.findAllMatches);
 
-router.post('/matches', validateJWT, matchesController.createMatch);
+router.post(
+  '/matches',
+  preventDuplicateTeamsMiddleware,
+  validateIfTeamsExists,
+  validateJWT,
+  matchesController.createMatch,
+);
+
+router.patch('/matches/:id/finish', matchesController.finishMatch);
 
 export default router;
