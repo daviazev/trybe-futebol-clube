@@ -13,5 +13,15 @@ export default class MatchesController {
     }
   };
 
-//   findMatchesInProgress = async (req)
+  findMatchesByStatus = async (req: Request, res: Response) => {
+    try {
+      if (!req.query.inProgress) return await this.findAllMatches(req, res);
+
+      const inProgress = req.query.inProgress === 'true';
+      const matches = await this.matchesService.findMatchesByStatus(inProgress);
+      return res.status(200).json(matches);
+    } catch (error) {
+      return res.status(500).json({ message: 'Erro interno' });
+    }
+  };
 }

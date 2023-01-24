@@ -11,4 +11,15 @@ export default class MatchesService {
     });
     return allMatches;
   };
+
+  findMatchesByStatus = async (inProgress: boolean) => {
+    const allMatches = await Matches.findAll({
+      where: { inProgress },
+      include: [
+        { model: Teams, as: 'homeTeam', attributes: ['teamName'] },
+        { model: Teams, as: 'awayTeam', attributes: ['teamName'] },
+      ],
+    });
+    return allMatches;
+  };
 }
