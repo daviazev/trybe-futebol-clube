@@ -69,7 +69,11 @@ const sortStats = (teamsStats: IHomeTeamsStats[]) => {
       return b.totalPoints - a.totalPoints;
     }
 
-    return b.goalsBalance - a.goalsBalance;
+    if (b.goalsBalance !== a.goalsBalance) {
+      return b.goalsBalance - a.goalsBalance;
+    }
+
+    return b.goalsFavor - a.goalsFavor;
   });
 
   return ordainedTeams;
