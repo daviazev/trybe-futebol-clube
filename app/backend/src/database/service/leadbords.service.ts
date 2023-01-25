@@ -30,9 +30,8 @@ export default class Leaderboard {
   getHomeTeamStats = async (): Promise<teste[]> => {
     const teamGoals = await Matches.findAll({
       attributes: [
-        'homeTeamId',
-        [Sequelize.fn('JSON_ARRAYAGG', Sequelize.col('homeTeamGoals')), 'goalsFavorArray'],
-        [Sequelize.fn('JSON_ARRAYAGG', Sequelize.col('awayTeamGoals')), 'goalsOwnArray'],
+        [Sequelize.fn('JSON_ARRAYAGG', Sequelize.col('homeTeamGoals')), 'goalsFavor'],
+        [Sequelize.fn('JSON_ARRAYAGG', Sequelize.col('awayTeamGoals')), 'goalsOwn'],
       ],
       include: [{
         model: Teams,
@@ -95,7 +94,7 @@ export default class Leaderboard {
   };
 
   sortStats = (teamsStats: IHomeTeamsStats[]) => {
-    const xablau = teamsStats.sort((a, b) => {
+    const ordainedTeams = teamsStats.sort((a, b) => {
       if (b.totalPoints !== a.totalPoints) {
         return b.totalPoints - a.totalPoints;
       }
@@ -103,7 +102,7 @@ export default class Leaderboard {
       return b.goalsBalance - a.goalsBalance;
     });
 
-    return xablau;
+    return ordainedTeams;
   };
 
   generateStatsHomeMatches = async (): Promise<IHomeTeamsStats[]> => {
