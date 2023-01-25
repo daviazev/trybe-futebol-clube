@@ -12,13 +12,13 @@ interface IHomeTeamsStats {
   goalsFavor: number,
   goalsOwn: number,
   goalsBalance: number,
-  efficiency: number,
+  efficiency: string,
 }
 
 interface teste {
-  teamName: string,
-  golsFavorArray: number[],
-  goalsOwnArray: number[],
+  name: string,
+  goalsFavor: number[],
+  goalsOwn: number[],
 }
 
 // const query = `SELECT T.team_name, JSON_ARRAYAGG(M.home_team_goals) as goalsFavorArray,
@@ -48,7 +48,7 @@ export default class Leaderboard {
     return teamGoals as unknown as teste[];
   };
 
-  calculateDraws = (homeGoals: number[], awayGoals: number[]) => {
+  calculateDraws = (homeGoals: number[], awayGoals: number[]): number => {
     let count = 0;
 
     homeGoals.forEach((value, index) => {
@@ -58,7 +58,7 @@ export default class Leaderboard {
     return count;
   };
 
-  calculatePoints = (homeGoals: number[], awayGoals: number[]) => {
+  calculatePoints = (homeGoals: number[], awayGoals: number[]): number => {
     let count = 0;
 
     homeGoals.forEach((value, index) => {
@@ -68,7 +68,7 @@ export default class Leaderboard {
     return count * 3 + this.calculateDraws(homeGoals, awayGoals);
   };
 
-  calculateLosses = (homeGoals: number[], awayGoals: number[]) => {
+  calculateLosses = (homeGoals: number[], awayGoals: number[]): number => {
     let count = 0;
 
     homeGoals.forEach((value, index) => {
@@ -78,34 +78,55 @@ export default class Leaderboard {
     return count;
   };
 
-  calculateEfficiency = (homeGoals: number[], awayGoals: number[]) => {
+  calculateVictories = (homeGoals: number[], awayGoals: number[]): number => {
+    let count = 0;
+    homeGoals.forEach((value, index) => {
+      if (value > awayGoals[index]) { count += 1; }
+    });
+    return count;
+  };
+
+  calculateEfficiency = (homeGoals: number[], awayGoals: number[]): string => {
     const totalPoints = this.calculatePoints(homeGoals, awayGoals);
     const totalGames = homeGoals.length;
     const efficiency = (totalPoints / (totalGames * 3)) * 100;
-    return Math.round(efficiency * 100) / 100;
+    if (efficiency === 0) return '0.00';
+    return `${Math.round(efficiency * 100) / 100}`;
+  };
+
+  sortStats = (teamsStats: IHomeTeamsStats[]) => {
+    const xablau = teamsStats.sort((a, b) => {
+      if (b.totalPoints !== a.totalPoints) {
+        return b.totalPoints - a.totalPoints;
+      }
+
+      return b.goalsBalance - a.goalsBalance;
+    });
+
+    return xablau;
   };
 
   generateStatsHomeMatches = async (): Promise<IHomeTeamsStats[]> => {
     const results = await this.getHomeTeamStats();
 
-    const stats = results.map(({ teamName, golsFavorArray, goalsOwnArray }:teste) => {
+    const stats = results.map(({ name, goalsFavor, goalsOwn }:teste) => {
       return {
-        name: teamName,
-        totalPoints: this.calculatePoints(golsFavorArray, goalsOwnArray),
-        totalGames: golsFavorArray.length,
-        totalVictories: this.calculatePoints(golsFavorArray, goalsOwnArray) / golsFavorArray.length,
-        totalDraws: this.calculateDraws(golsFavorArray, goalsOwnArray),
-        totalLosses: this.calculateLosses(golsFavorArray, goalsOwnArray),
-        goalsFavor: golsFavorArray.reduce((acc, curr) => acc + curr),
-        goalsOwn: goalsOwnArray.reduce((acc, curr) => acc + curr),
-        goalsBalance: golsFavorArray.reduce((acc, curr) => acc + curr)
-        - goalsOwnArray.reduce((acc, curr) => acc + curr),
-        efficiency: this.calculateEfficiency(golsFavorArray, goalsOwnArray),
+        name,
+        totalPoints: this.calculatePoints(goalsFavor, goalsOwn),
+        totalGames: goalsFavor.length,
+        totalVictories: this.calculateVictories(goalsFavor, goalsOwn),
+        totalDraws: this.calculateDraws(goalsFavor, goalsOwn),
+        totalLosses: this.calculateLosses(goalsFavor, goalsOwn),
+        goalsFavor: goalsFavor.reduce((acc, curr) => acc + curr),
+        goalsOwn: goalsOwn.reduce((acc, curr) => acc + curr),
+        goalsBalance: goalsFavor.reduce((acc, curr) => acc + curr)
+        - goalsOwn.reduce((acc, curr) => acc + curr),
+        efficiency: this.calculateEfficiency(goalsFavor, goalsOwn),
       };
 
-      return { teamName, golsFavorArray, goalsOwnArray };
+      return { name, goalsFavor, goalsOwn };
     });
 
-    return stats as IHomeTeamsStats[];
+    return this.sortStats(stats as IHomeTeamsStats[]);
   };
 }
