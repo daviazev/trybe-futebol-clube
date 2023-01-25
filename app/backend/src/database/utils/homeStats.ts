@@ -63,17 +63,17 @@ const calculateEfficiency = (homeGoals: number[], awayGoals: number[]): string =
   return `${Math.round(efficiency * 100) / 100}`;
 };
 
-// const sortStats = (teamsStats: IHomeTeamsStats[]) => {
-//   const ordainedTeams = teamsStats.sort((a, b) => {
-//     if (b.totalPoints !== a.totalPoints) {
-//       return b.totalPoints - a.totalPoints;
-//     }
+const sortStats = (teamsStats: IHomeTeamsStats[]) => {
+  const ordainedTeams = teamsStats.sort((a, b) => {
+    if (b.totalPoints !== a.totalPoints) {
+      return b.totalPoints - a.totalPoints;
+    }
 
-//     return b.goalsBalance - a.goalsBalance;
-//   });
+    return b.goalsBalance - a.goalsBalance;
+  });
 
-//   return ordainedTeams;
-// };
+  return ordainedTeams;
+};
 
 const generateStatsHomeMatches = (results: teste[]) => {
   const stats = results.map(({ name, goalsFavor, goalsOwn }) => ({
@@ -90,7 +90,7 @@ const generateStatsHomeMatches = (results: teste[]) => {
     efficiency: calculateEfficiency(goalsFavor, goalsOwn),
   }));
 
-  return stats as IHomeTeamsStats[];
+  return sortStats(stats) as IHomeTeamsStats[];
 };
 
 export default generateStatsHomeMatches;
