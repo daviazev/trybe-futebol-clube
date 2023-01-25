@@ -1,6 +1,6 @@
-import { Sequelize } from 'sequelize';
+// import { Sequelize } from 'sequelize';
 import Matches from '../models/Matches';
-import Teams from '../models/Teams';
+// import Teams from '../models/Teams';
 
 interface IHomeTeamsStats {
   name: string,
@@ -21,30 +21,35 @@ interface teste {
   goalsOwn: number[],
 }
 
-// const query = `SELECT T.team_name, JSON_ARRAYAGG(M.home_team_goals) as goalsFavorArray,
-// JSON_ARRAYAGG(M.away_team_goals) as goalsOwnArray FROM TRYBE_FUTEBOL_CLUBE.matches AS M
-// INNER JOIN TRYBE_FUTEBOL_CLUBE.teams AS T
-// ON T.id = M.home_team_id WHERE M.in_progress = 0 group by T.team_name`;
+const query = `SELECT T.team_name, JSON_ARRAYAGG(M.home_team_goals) as goalsFavorArray,
+JSON_ARRAYAGG(M.away_team_goals) as goalsOwnArray FROM TRYBE_FUTEBOL_CLUBE.matches AS M
+INNER JOIN TRYBE_FUTEBOL_CLUBE.teams AS T
+ON T.id = M.home_team_id WHERE M.in_progress = 0 group by T.team_name`;
 
 export default class Leaderboard {
-  getHomeTeamStats = async (): Promise<teste[]> => {
-    const teamGoals = await Matches.findAll({
-      attributes: [
-        [Sequelize.fn('JSON_ARRAYAGG', Sequelize.col('homeTeamGoals')), 'goalsFavor'],
-        [Sequelize.fn('JSON_ARRAYAGG', Sequelize.col('awayTeamGoals')), 'goalsOwn'],
-      ],
-      include: [{
-        model: Teams,
-        as: 'homeTeam',
-        attributes: ['teamName'],
-        required: true,
-      }],
-      where: { inProgress: false },
-      group: ['homeTeam.teamName'],
-      raw: true,
-    });
+  // getHomeTeamStats = async (): Promise<teste[]> => {
+  //   const teamGoals = await Matches.findAll({
+  //     attributes: [
+  //       [Sequelize.fn('JSON_ARRAYAGG', Sequelize.col('homeTeamGoals')), 'goalsFavor'],
+  //       [Sequelize.fn('JSON_ARRAYAGG', Sequelize.col('awayTeamGoals')), 'goalsOwn'],
+  //     ],
+  //     include: [{
+  //       model: Teams,
+  //       as: 'homeTeam',
+  //       attributes: ['teamName'],
+  //       required: true,
+  //     }],
+  //     where: { inProgress: false },
+  //     group: ['homeTeam.teamName'],
+  //     raw: true,
+  //   });
 
-    return teamGoals as unknown as teste[];
+  //   return teamGoals as unknown as teste[];
+  // };
+
+  getHomeTeamStats = async () => {
+    const result = await Matches.sequelize?.query(query);
+    return result as teste[];
   };
 
   calculateDraws = (homeGoals: number[], awayGoals: number[]): number => {

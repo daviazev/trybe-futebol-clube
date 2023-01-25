@@ -6,7 +6,7 @@ export default class LeaderboardController {
 
   getHomeTeamStats = async (_req: Request, res: Response) => {
     try {
-      const result = await this.leaderBoardService.generateStatsHomeMatches();
+      const result = await this.leaderBoardService.getHomeTeamStats();
       return res.status(200).json(result);
     } catch (error) {
       return res.status(500).json({ message: 'Erro interno' });
