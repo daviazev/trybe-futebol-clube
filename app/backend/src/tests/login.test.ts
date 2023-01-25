@@ -16,7 +16,6 @@ import { Response } from 'superagent';
 
 chai.use(chaiHttp)
 
-
 import { 
   loginMock,
   sucessUser,
@@ -25,11 +24,6 @@ import {
   invalidEmail,
   invalidPassword
  } from './mocks/user.mocks'
-import { waitFor } from '@testing-library/react';
-
-// import UserService from '../database/service/user.service';
-
-chai.use(chaiHttp);
 
 const { expect } = chai;
 
@@ -37,13 +31,13 @@ const { expect } = chai;
 describe('Testes para a rota /login', () => {
   let chaiHttpResponse: Response;
 
-  before(async () => {
+  beforeEach(async () => {
     sinon
      .stub(User, "findOne")
      .resolves(sucessUser as User);
   });
 
-  after(()=>{
+  afterEach(()=>{
     (User.findOne as sinon.SinonStub).restore();
   })
 
@@ -83,14 +77,4 @@ describe('Testes para a rota /login', () => {
 
     expect(chaiHttpResponse.status).to.be.equal(500)
   })
-
-  // it('loginService', async () => {
-  //   const userService = new UserService();
-
-  //   sinon.stub(userService, 'login').resolves()
-
-  //   const response = await chai.request(app).post('/login')
-
-  //   expect(response.status).to.be.equal(400)
-  // })
 });

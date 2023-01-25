@@ -77,15 +77,6 @@ describe('Testes para a rota /matches', () => {
     expect(response.status).to.be.equal(422)
   })
 
-//   interface IUpdateMatch {
-//     id?: number,
-//     homeTeamId: number,
-//     awayTeamId: number,
-//     homeTeamGoals: number,
-//     awayTeamGoals: number,
-//     inProgress: boolean,
-//   }
-
   it('create match - status 422', async () => {
     sinon.stub(Matches, 'create').resolves()
 
@@ -93,23 +84,4 @@ describe('Testes para a rota /matches', () => {
 
     expect(response.status).to.be.equal(422)
   })
-
-//   it('create match', async () => {
-//     const match = {
-//       id: 1,
-//       homeTeamId: 1,
-//       awayTeamId: 2,
-//       homeTeamGoals: 1,
-//       awayTeamGoals: 1,
-//       inProgress: true
-//     }
-
-//     sinon.stub(Matches, 'create').resolves(match as Matches)
-
-//     const response = await chai.request(app).post('/matches').send({ body: match })
-
-//     console.log(response);
-
-//     expect(response.status).to.be.equal(422)
-//   })
 })
