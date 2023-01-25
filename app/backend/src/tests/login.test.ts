@@ -10,8 +10,6 @@ import { app } from '../app';
 
 import User from '../database/models/Users';
 
-// import UserController from '../database/controller/user.controller';
-
 import { Response } from 'superagent';
 
 chai.use(chaiHttp)

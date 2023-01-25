@@ -1,14 +1,7 @@
 import Matches from '../models/Matches';
 import Teams from '../models/Teams';
 
-interface IUpdateMatch {
-  id?: number,
-  homeTeamId: number,
-  awayTeamId: number,
-  homeTeamGoals: number,
-  awayTeamGoals: number,
-  inProgress: boolean,
-}
+import { IUpdateMatch } from '../interfaces';
 
 export default class MatchesService {
   getAllMatches = async () => {

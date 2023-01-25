@@ -1,21 +1,4 @@
-interface IHomeTeamsStats {
-  name: string,
-  totalPoints: number,
-  totalGames: number,
-  totalVictories: number,
-  totalDraws: number,
-  totalLosses: number,
-  goalsFavor: number,
-  goalsOwn: number,
-  goalsBalance: number,
-  efficiency: string,
-}
-
-interface teste {
-  name: string,
-  goalsFavor: number[],
-  goalsOwn: number[],
-}
+import { IHomeTeamsStats, IInfosFromBD } from '../interfaces';
 
 const calculateDraws = (homeGoals: number[], awayGoals: number[]): number => {
   let count = 0;
@@ -79,7 +62,7 @@ const sortStats = (teamsStats: IHomeTeamsStats[]) => {
   return ordainedTeams;
 };
 
-const generateStatsHomeMatches = (results: teste[]) => {
+const generateStatsHomeMatches = (results: IInfosFromBD[]) => {
   const stats = results.map(({ name, goalsFavor, goalsOwn }) => ({
     name,
     totalPoints: calculatePoints(goalsFavor, goalsOwn),
