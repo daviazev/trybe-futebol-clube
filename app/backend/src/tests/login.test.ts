@@ -12,7 +12,10 @@ import User from '../database/models/Users';
 
 // import UserController from '../database/controller/user.controller';
 
-// import { Response } from 'superagent';
+import { Response } from 'superagent';
+
+chai.use(chaiHttp)
+
 
 import { 
   loginMock,
@@ -22,6 +25,9 @@ import {
   invalidEmail,
   invalidPassword
  } from './mocks/user.mocks'
+import { waitFor } from '@testing-library/react';
+
+// import UserService from '../database/service/user.service';
 
 chai.use(chaiHttp);
 
@@ -29,7 +35,7 @@ const { expect } = chai;
 
 
 describe('Testes para a rota /login', () => {
-  // let chaiHttpResponse: Response;
+  let chaiHttpResponse: Response;
 
   before(async () => {
     sinon
@@ -71,4 +77,20 @@ describe('Testes para a rota /login', () => {
 
     expect(response.status).to.be.equal(401);
   })
+
+  it("Teste com token inexistente", async () => {
+    chaiHttpResponse = await chai.request(app).get('/login/validate').set({ authorization: "xablau" })
+
+    expect(chaiHttpResponse.status).to.be.equal(500)
+  })
+
+  // it('loginService', async () => {
+  //   const userService = new UserService();
+
+  //   sinon.stub(userService, 'login').resolves()
+
+  //   const response = await chai.request(app).post('/login')
+
+  //   expect(response.status).to.be.equal(400)
+  // })
 });

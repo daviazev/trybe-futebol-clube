@@ -9,9 +9,11 @@ export const sucessUser = {
 }
 
 export const loginMock = {
-  email: "teste@teste.com",
-  password: "umaSenhaMuitoDifícil"
+  email: "admin@admin.com",
+  password: "secret_admin"
 }
+
+
 
 export const noEmailLoginMock = {
   password: "umaSenhaMuitoDifícil"
