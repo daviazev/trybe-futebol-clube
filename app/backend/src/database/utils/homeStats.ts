@@ -101,7 +101,7 @@ export const generateGeneralStats = (home: IHomeTeamsStats[], away: IHomeTeamsSt
         goalsFavor: e.goalsFavor + away[i].goalsFavor,
         goalsOwn: e.goalsOwn + away[i].goalsOwn,
         goalsBalance: e.goalsBalance + away[i].goalsBalance,
-        efficiency: c(e.totalPoints + away[i].totalPoints, away[i].totalGames + away[i].totalGames),
+        efficiency: c(e.totalPoints + away[i].totalPoints, e.totalGames + away[i].totalGames),
       });
     }
 
