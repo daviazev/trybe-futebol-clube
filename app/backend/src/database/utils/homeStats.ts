@@ -46,6 +46,15 @@ const calculateEfficiency = (homeGoals: number[], awayGoals: number[]): string =
   return `${Math.round(efficiency * 100) / 100}`;
 };
 
+const c = (
+  totalPoints: number,
+  totalGames: number,
+) => {
+  const generalEfficiency = (totalPoints / (totalGames * 3)) * 100;
+  if (generalEfficiency === 0) return '0.00';
+  return `${Math.round(generalEfficiency * 100) / 100}`;
+};
+
 const sortStats = (teamsStats: IHomeTeamsStats[]) => {
   const ordainedTeams = teamsStats.sort((a, b) => {
     if (b.totalPoints !== a.totalPoints) {
@@ -78,6 +87,28 @@ const generateStatsHomeMatches = (results: IInfosFromBD[]) => {
   }));
 
   return sortStats(stats) as IHomeTeamsStats[];
+};
+
+export const generateGeneralStats = (home: IHomeTeamsStats[], away: IHomeTeamsStats[]) => {
+  const result = home.map((e, i) => {
+    if (e.name === away[i].name) {
+      return ({ name: e.name,
+        totalPoints: e.totalPoints + away[i].totalPoints,
+        totalGames: e.totalGames + away[i].totalGames,
+        totalVictories: e.totalVictories + away[i].totalVictories,
+        totalDraws: e.totalDraws + away[i].totalDraws,
+        totalLosses: e.totalLosses + away[i].totalLosses,
+        goalsFavor: e.goalsFavor + away[i].goalsFavor,
+        goalsOwn: e.goalsOwn + away[i].goalsOwn,
+        goalsBalance: e.goalsBalance + away[i].goalsBalance,
+        efficiency: c(e.totalPoints + away[i].totalPoints, away[i].totalGames + away[i].totalGames),
+      });
+    }
+
+    return e;
+  });
+
+  return sortStats(result) as IHomeTeamsStats[];
 };
 
 export default generateStatsHomeMatches;
